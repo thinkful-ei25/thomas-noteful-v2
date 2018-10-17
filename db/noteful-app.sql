@@ -14,6 +14,7 @@ CREATE TABLE notes (
   created timestamp DEFAULT now(),
   folder_id int REFERENCES folders(id) ON DELETE SET NULL
 );
+
 ALTER SEQUENCE notes_id_seq RESTART WITH 1000;
 ALTER SEQUENCE folders_id_seq RESTART WITH 100;
 

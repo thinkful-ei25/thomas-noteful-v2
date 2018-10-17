@@ -72,20 +72,10 @@ router.put('/:id', (req, res, next) => {
     folder_id: folderId
   };
 
-  let noteId;
-
   knex('notes')
     .update(updateItem)
     .where('notes.id', id)
-    .returning('id')
-    .then(([id]) => {
-      noteId = id;
-      // Using the new id, select the new note and the folder
-      return knex.select('notes.id', 'title', 'content', 'folder_id as folderId', 'folders.name as folderName')
-        .from('notes')
-        .leftJoin('folders', 'notes.folder_id', 'folders.id')
-        .where('notes.id', noteId);
-    })
+    .returning(['id','title', 'content', 'folder_id as folderId'])
     .then(([result]) => {
       if (result) {
         res.json(result);
