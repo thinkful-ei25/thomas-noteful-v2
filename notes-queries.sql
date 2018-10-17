@@ -23,7 +23,7 @@ INSERT INTO notes (title, content) VALUES
   ('ways 9', 'content 9'),
   ('title 10', 'content 10');
 
-  UPDATE notes SET title='updated title' WHERE title='title 10';
+  UPDATE notes SET title='updated title' WHERE title='title 10'; 
 
 
 -- #1 Select all the notes
