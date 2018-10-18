@@ -101,8 +101,12 @@ INSERT INTO notes_tags (note_id, tag_id) VALUES
   (1000, 1),
   (1001, 2),
   (1002, 3),
-  (1003, 4);
-  
+  (1003, 1),
+  (1003, 2),
+  (1003, 3),
+  (1004, 1),
+  (1004, 2);
+
 -- -- get all notes
 -- SELECT * FROM notes;
 
