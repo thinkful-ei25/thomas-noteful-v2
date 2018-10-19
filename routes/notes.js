@@ -64,7 +64,7 @@ router.get('/:id', (req, res, next) => {
       }
       if (results) {
         const hydrated = hydrateNotes(results);
-        res.json(hydrated);
+        res.json(hydrated[0]);
       } else {
         next();
       }
@@ -102,7 +102,7 @@ router.put('/:id', (req, res, next) => {
     //starting new code here
     .then(([note]) => {
       noteId = note.id;
-      console.log('noteID', noteId);
+      // console.log('noteID', noteId);
       return knex('notes_tags').where('note_id', noteId).del();
     })
     .then(() => {

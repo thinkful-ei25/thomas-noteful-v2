@@ -1,5 +1,5 @@
 -- psql -U dev -d noteful-app -f ~/Desktop/thinkful-ei/projects/week_4/noteful-app-v2/db/noteful-app.sql
-
+-- psql -U dev -d noteful-test -f ./db/noteful-app.sql
 DROP TABLE IF EXISTS notes_tags, tags, notes, folders;
 
 CREATE TABLE folders (
@@ -45,11 +45,6 @@ INSERT INTO notes (title, content, folder_id) VALUES
     '5 life lessons learned from cats',
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor...',
     100
-  ),
-  (
-    '5 life lessons learned from cats',
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor...',
-    101
   ),
   (
     'What the government doesn''t want you to know about cats',

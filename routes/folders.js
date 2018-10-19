@@ -40,7 +40,7 @@ router.put('/:id', (req, res, next) => {
 
   /***** Never trust users - validate input *****/
   const updateObj = {};
-  const updateableFields = ['title', 'content'];
+  const updateableFields = ['name'];
 
   updateableFields.forEach(field => {
     if (field in req.body) {
@@ -49,8 +49,8 @@ router.put('/:id', (req, res, next) => {
   });
 
   /***** Never trust users - validate input *****/
-  if (!updateObj.title) {
-    const err = new Error('Missing `title` in request body');
+  if (!updateObj.name) {
+    const err = new Error('Missing `name` in request body');
     err.status = 400;
     return next(err);
   }
