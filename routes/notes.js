@@ -101,9 +101,12 @@ router.put('/:id', (req, res, next) => {
     .returning(['id'])
     //starting new code here
     .then(([note]) => {
-      noteId = note.id;
-      // console.log('noteID', noteId);
-      return knex('notes_tags').where('note_id', noteId).del();
+      if (note) {
+        noteId = note.id;
+        return knex('notes_tags').where('note_id', noteId).del();
+      } else {
+        next();
+      }
     })
     .then(() => {
       // Insert related tags into notes_tags table

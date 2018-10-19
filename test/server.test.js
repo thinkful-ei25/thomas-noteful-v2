@@ -156,30 +156,61 @@ describe('Noteful API', function () {
   });
 
   // /*========== #5 ==========*/
-  // describe('PUT /api/notes/:id', function () {
+  describe('PUT /api/notes/:id', function () {
+    const testId = 1000;
+    const badId = 2000;
+    const updateNote = { title: 'test title', content: 'test content', folderId: '101', tags: [1,2,3] };
+    const badNote = { title: '', content: 'test content', folderId: '101', tags: [1,2,3] };
+    it('should update the note', function () {
 
-  //   it('should update the note', function () {
+      return chai.request(app)
+        .put(`/api/notes/${testId}`)
+        .send(updateNote)
+        .then(function(res) {
+          expect(res).to.have.status(200);
+          expect(res).to.be.json;
+          expect(res.body).to.be.a('object');
+          expect(res.body).to.include.keys('id', 'title', 'content');
+        });
+    });
 
-  //   });
+    it('should respond with a 404 for an invalid id', function () {
+      return chai.request(app)
+        .put(`/api/notes/${badId}`)
+        .send(updateNote)
+        .then(function(res) {
+          expect(res).to.have.status(404);
+          expect(new Error).to.be.an('error');
+        });
+    });
 
-  //   it('should respond with a 404 for an invalid id', function () {
+    it('should return an error when missing "title" field', function () {
+      return chai.request(app)
+        .put(`/api/notes/${testId}`)
+        .send(badNote)
+        .then(function(res) {
+          expect(res).to.have.status(400);
+          expect(new Error).to.be.an('error');
+        });
+    });
 
-  //   });
+  });
 
-  //   it('should return an error when missing "title" field', function () {
+  /*========== #6 ==========*/
+  describe('DELETE  /api/notes/:id', function () {
+    const testId = 1000;
+    it('should delete an item by id', function () {
+      return chai.request(app)
+        .get(`/api/notes/${testId}`)
+        .then(() => {
+          return chai.request(app).delete(`/api/notes/${testId}`);
+        })
+        .then(function(res) {
+          expect(res).to.have.status(204);
+        });
+    });
 
-  //   });
-
-  // });
-
-  // /*========== #6 ==========*/
-  // describe('DELETE  /api/notes/:id', function () {
-
-  //   it('should delete an item by id', function () {
-
-  //   });
-
-  // });
+  });
 
 
 });
