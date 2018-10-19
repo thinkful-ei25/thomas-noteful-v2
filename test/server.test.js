@@ -8,19 +8,6 @@ const expect = chai.expect;
 
 chai.use(chaiHttp);
 
-// describe('Sanity check', function () {
-
-//   it('true should be true', function () {
-//     expect(true).to.be.true;
-//   });
-
-//   it('2 + 2 should equal 4', function () {
-//     expect(2 + 2).to.equal(4);
-//   });
-
-// });
-
-
 describe('Static Server', function () {
 
   it('GET request "/" should return the index page', function () {
@@ -118,36 +105,55 @@ describe('Noteful API', function () {
 
   // /*========== #3 ==========*/
   describe('GET /api/notes/:id', function () {
-    const id = 1000;
+    const testId = 1000;
+    const badId = 2000;
     it('should return correct note when given an id', function () {
       return chai.request(app)
-        .get(`/api/notes/${id}`)
+        .get(`/api/notes/${testId}`)
         .then(function (res) {
           expect(res).to.have.status(200);
-          expect(res).to.be.json;
-          // find the id within the array of objects
-          // make sure a note with id exists and return
+          expect(res.body).to.an('object');
+          expect(res.body).to.include({id: testId});
         });
     });
 
     it('should respond with a 404 for an invalid id', function () {
-
+      return chai.request(app)
+        .get(`/api/notes/${badId}`)
+        .then(function (res) {
+          expect(res).to.have.status(404);
+        });
     });
 
   });
 
   // /*========== #4 ==========*/
-  // describe('POST /api/notes', function () {
+  describe('POST /api/notes', function () {
+    const testNote = { title: 'test title', content: 'test content', folderId: '101', tags: [1,2,3] };
+    const badNote = { title: '', content: 'test content', folderId: '101', tags: [1,2,3] };
+    it('should create and return a new item when provided valid data', function () {
+      return chai.request(app)
+        .post('/api/notes')
+        .send(testNote)
+        .then(function(res) {
+          expect(res).to.have.status(201);
+          expect(res).to.be.json;
+          expect(res.body).to.be.a('object');
+          expect(res.body).to.include.keys('id', 'title', 'content');
+        });
+    });
 
-  //   it('should create and return a new item when provided valid data', function () {
+    it('should return an error when missing "title" field', function () {
+      return chai.request(app)
+        .post('/api/notes')
+        .send(badNote)
+        .then(function(res) {
+          expect(res).to.have.status(400);
+          expect(new Error).to.be.an('error');
+        });
+    });
 
-  //   });
-
-  //   it('should return an error when missing "title" field', function () {
-
-  //   });
-
-  // });
+  });
 
   // /*========== #5 ==========*/
   // describe('PUT /api/notes/:id', function () {
